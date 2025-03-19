@@ -43,11 +43,11 @@
 #' method. The \code{rsp_dcast_species} method,
 #' applied using \code{widen='species'}, is effectively:
 #'
-#' \code{dcast(..., profile.id+.profile~.species, value.var=".value")}
+#' \code{dcast(..., .profile.id+.profile~.species, value.var=".value")}
 #'
 #' And, the alternative \code{widen='profile'}:
 #'
-#' \code{dcast(..., species.id+.species~.profile, value.var=".value")}
+#' \code{dcast(..., .species.id+.species~.profile, value.var=".value")}
 #'
 #' \code{respeciate} uses a local version of the \code{SPECIATE} and
 #' \code{SPECIEUROPE} weight measurements \code{.value}, so the EPA and
@@ -79,6 +79,18 @@
 
 # might be an issue with rsp_dcast_profile
 #     if profile names are not unique
+
+#might be broken
+#see
+# a <- rsp(1:50)
+# summary(a)
+# summary(rsp_melt_wide(rsp_dcast_profile_id(a))) # nearly works!!!
+# but next few don't
+# summary(rsp_dcast_species(a))
+# summary(rsp_melt_wide(rsp_dcast_species(a)))
+# as.data.frame(head(rsp_melt_wide(rsp_dcast_species_id(a)),200)) #NANs in there...
+
+
 
 #maybe think about padding rsp_dcast_profile
 

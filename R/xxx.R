@@ -1,6 +1,22 @@
 #####################
-# to think about
+# (general)
 #####################
+
+# structure here
+#   setup (globals, imports, etc)
+#   .rsp (unexported functions)
+#   ..rsp (unexported meta data handlers)
+
+#######################
+# jobs/issues
+#######################
+
+# think about .rsp_test_respeciate
+#    have new class handling so could redo this ???
+#    could also think about
+#       a >> dcast_a >> plot(dcast_a) dies at moment
+#          could use .rsp_plot_fix to convert it back to  a-like layout
+#                 with rsp_melt_wide(dcast_a, drop.nas=TRUE)
 
 ##############################
 #setup code, misc code,
@@ -19,7 +35,7 @@ utils::globalVariables(c("SPECIATE", "SPECIEUROPE", ".SD", "ans", "control",
                          ".test.z1", ".test.z2", ".value.ref", ".value.x",
                          "corr", "n", "nearness"))
 
-#to think about...
+#to think about .....
 
 # all @import here
 #    moved to data.table::as.data.table in code...
@@ -40,7 +56,7 @@ utils::globalVariables(c("SPECIATE", "SPECIEUROPE", ".SD", "ans", "control",
 #' @importFrom data.table ":="
 #' @importFrom stats sd cophenetic cor cutree dist hclust heatmap AIC
 #' as.formula coefficients formula lm nls nls.control predict update na.omit
-#' @importFrom utils modifyList head packageVersion
+#' @importFrom utils modifyList head packageVersion write.csv
 #' @importFrom graphics axis barplot par legend lines rect text abline
 #' grid mtext plot.new plot.window points polygon title
 #' @importFrom grDevices cm.colors colorRampPalette as.graphicsAnnot
@@ -64,12 +80,19 @@ utils::globalVariables(c("SPECIATE", "SPECIEUROPE", ".SD", "ans", "control",
 #          SPECIES_NAME -> .species
 #          PROFILE_CODE -> .profile.id
 #          PROFILE_NAME -> .profile
-#          WEIGHT_PERCENT -> .pc.weight
+#          WEIGHT_PERCENT -> .pc.weight (.value)
 
 
 
+#########################
+# unexported functions
+#########################
 
 
+# .rsp_old2ew
+#########################
+
+# now sure this is being used anywhere, anymore...
 
 .rsp_old2ew <- function(x){
   #make previous data look like new data
@@ -139,8 +162,6 @@ utils::globalVariables(c("SPECIATE", "SPECIEUROPE", ".SD", "ans", "control",
 #                     main one for those using respeciate is
 #                               sysdata -> SPECIATE
 #                  might also need to think about how they could use EU data...
-
-
 
 ###############################
 # possible future projects ???
@@ -463,6 +484,53 @@ utils::globalVariables(c("SPECIATE", "SPECIEUROPE", ".SD", "ans", "control",
          data.table::as.data.table(pc.wts.eu)),
     fill=TRUE))
 }
+
+
+# need to pull the uncertainties for esat...
+# only works for SPECIEUROPE
+
+..rsp_uncertainties_meta <- function(){
+
+  ######################
+  # us uncertainties
+  ######################
+  pc.unc.us <- SPECIATE$SPECIES[c("PROFILE_CODE", "SPECIES_ID", "WEIGHT_PERCENT")]
+  names(pc.unc.us) <- c(".profile.id", ".species.id", ".pc.unc")
+  pc.unc.us$.profile.id <- paste("US:", pc.unc.us$.profile.id, sep="")
+  pc.unc.us$.species.id <- as.character(pc.unc.us$.species.id)
+  pc.unc.us$.pc.unc <- NA # nothing in there ???
+
+  ##################
+  #eu uncertainties
+  ##################
+  pc.unc.eu <- SPECIEUROPE$source
+
+  #corrections
+  ######################
+  #from ..rsp_species_id
+  #    need to transpose any changes
+  pc.unc.eu$Specie.Id[pc.unc.eu$Specie.Id>2786] <-
+    pc.unc.eu$Specie.Id[pc.unc.eu$Specie.Id>2786] + 0.5
+  pc.unc.eu$Specie.Id[tolower(pc.unc.eu$Specie)=="aluminum oxide"] <- 2848
+
+  #other changes
+  #######################
+  pc.unc.eu <- pc.unc.eu[c("Id", "Specie.Id", "Uncertainty")]
+  names(pc.unc.eu) <- c(".profile.id", ".species.id", ".pc.unc")
+  pc.unc.eu$.profile.id <- paste("EU:", pc.unc.eu$.profile.id, sep="")
+  pc.unc.eu$.pc.unc[tolower(pc.unc.eu$.pc.unc)=="not detected"] <- NA
+  pc.unc.eu$.pc.unc <- as.numeric(pc.unc.eu$.pc.unc) * 100
+  pc.unc.eu$.species.id <- as.character(pc.unc.eu$.species.id)
+
+  #rbindlist out!
+  ################
+  #  stacking....
+  as.data.frame(data.table::rbindlist(
+    list(data.table::as.data.table(pc.unc.us),
+         data.table::as.data.table(pc.unc.eu)),
+    fill=TRUE))
+}
+
 
 
 ..rsp_references_meta <- function(){
@@ -883,6 +951,8 @@ utils::globalVariables(c("SPECIATE", "SPECIEUROPE", ".SD", "ans", "control",
 ###############################
 #.rsp_plot_fix
 
+# should think about redoing this for new class handling...
+# see e.g.
 
 .rsp_test_respeciate <- function(x, level = 1,
                                 silent = FALSE){
@@ -899,6 +969,10 @@ utils::globalVariables(c("SPECIATE", "SPECIEUROPE", ".SD", "ans", "control",
   }
   if(all(c(".species", ".species.id", ".profile", ".profile.id",
            ".pc.weight") %in% names(x))){
+    out <- "respeciate"
+  }
+  if(all(c(".species", ".species.id", ".profile", ".profile.id",
+           ".value") %in% names(x))){
     out <- "respeciate"
   }
   if(!silent){

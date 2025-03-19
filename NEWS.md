@@ -1,5 +1,9 @@
 # Release Notes Version 0.3
 
+* [0.3.6] 
+    * released 2025-03-19 
+    * reworking pls code
+
 * [0.3.5] 
     * released 2025-02-19 
     * rebuild rsp_match_profile using data.table 

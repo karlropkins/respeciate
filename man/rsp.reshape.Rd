@@ -71,11 +71,11 @@ be slow and memory inefficient. So, \code{respeciate} uses the
 method. The \code{rsp_dcast_species} method,
 applied using \code{widen='species'}, is effectively:
 
-\code{dcast(..., profile.id+.profile~.species, value.var=".value")}
+\code{dcast(..., .profile.id+.profile~.species, value.var=".value")}
 
 And, the alternative \code{widen='profile'}:
 
-\code{dcast(..., species.id+.species~.profile, value.var=".value")}
+\code{dcast(..., .species.id+.species~.profile, value.var=".value")}
 
 \code{respeciate} uses a local version of the \code{SPECIATE} and
 \code{SPECIEUROPE} weight measurements \code{.value}, so the EPA and
