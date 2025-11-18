@@ -1,3 +1,9 @@
+# Release Notes Version 0.4
+
+* [0.4.0]
+    * release 2025-11-18 
+    * updated local SPECIATE to versus 5.4 [epa release] 2025-09-08 
+
 # Release Notes Version 0.3
 
 * [0.3.6] 
@@ -17,7 +23,6 @@
 * [0.3.3] 
     * released 2024-07-13 
     * added draft rsp_lbind 
-
 
 * [0.3.2] 
     * released 2024-07-09 
