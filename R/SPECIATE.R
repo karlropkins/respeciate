@@ -7,6 +7,8 @@
 #' SPECIATE repository of organic gas and particulate matter (PM) speciation
 #' profiles of air pollution sources.
 #'
+#' Currently using version 5.4 as of 2025-11-18.
+#'
 #' @format A ( 13  long) 'list' object
 #' \describe{
 #'   \item{PROFILES}{The main \code{data.frame} of profile-specific meta-data,

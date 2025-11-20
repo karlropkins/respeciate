@@ -7,7 +7,7 @@ status](https://github.com/atmoschem/respeciate/workflows/R-CMD-check/badge.svg)
 respeciate gives you access to air pollutant emissions profiles in the
 [US/EPA Speciate
 v5.4](https://www.epa.gov/air-emissions-modeling/speciate) and [EU/JRC
-SPECIEUROPE v2.0](https://source-apportionment.jrc.ec.europa.eu/)
+SPECIEUROPE v3.0](https://source-apportionment.jrc.ec.europa.eu/)
 archives via R.
 
 The installation is:

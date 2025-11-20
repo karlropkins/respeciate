@@ -1,5 +1,9 @@
 # Release Notes Version 0.4
 
+* [0.4.1]
+    * release 2025-11-19 
+    * updated local SPECIEUROPE to versus 3.0 [jrc release] 2025-03-10
+    
 * [0.4.0]
     * release 2025-11-18 
     * updated local SPECIATE to versus 5.4 [epa release] 2025-09-08 

@@ -331,6 +331,17 @@ utils::globalVariables(c("SPECIATE", "SPECIEUROPE", ".SD", "ans", "control",
 # related issue some Specie are not the same for
 #            eu:Specie.Id versus us:.species.id...
 
+# removed
+# ..rsp_dont.tell.mum
+# in data folder as part of specieurope update/speciate merge
+
+## run dont.tell.mum on a new SPECIATE/SPECIEUROPE data set
+## move this to the data update section ???
+## out <- rsp_dont.tell.mum
+## then merge(SPECIEUROPE$source, out) adds .specie.id to SPECIEUROPE
+## that splat it to data
+## then check ..rsp_species_meta
+
 ..rsp_species_meta <-function(){
 
   ##############################
@@ -361,25 +372,23 @@ utils::globalVariables(c("SPECIATE", "SPECIEUROPE", ".SD", "ans", "control",
 
   #current local tidies/corrections
   ########################
+  #now doing this as part of SPECIEUROPE data merge...
+  #######################
   #NOTE: same need to be done in ..rsp_weights_meta
   #      but point at which it is done is different...
   #      so variable naming will be different...
+  #      so using .species.id as a look-up... for eu/us matches
+  #          and .species.id = Specie.Id + 0.5 if entry is different in SPECIATE...
+  #          see data auto update method notes
+
   species.eu <- species.eu[c("Specie.Id", "Specie", "Analythical.Method",
                              "Uncertainty.Method", "Sampling.Method", "Cas",
-                             "Symbol")]
+                             "Symbol", ".species.id")]
   species.eu <- species.eu[!duplicated(species.eu$Specie.Id),]
-  species.eu$.species.id <- as.numeric(species.eu$Specie.Id)
-  #ids above 2786 different for Us and EU data sets...
-  #   so adding 0.5 to make species unqiue...
-  species.eu$.species.id[species.eu$.species.id>2786] <-
-    species.eu$.species.id[species.eu$.species.id>2786] + 0.5
-  # most SPECIE/.species for these do not seem to be in both BUT..
-  # aluminum oxide assigned in both with different ids..
-  species.eu$.species.id[tolower(species.eu$Specie)=="aluminum oxide"] <- 2848
 
   #add common term for merge...
   #################################
-  species.eu$.species.id <- as.character(species.eu$.species.id)
+  ### species.eu$.species.id <- as.character(species.eu$.species.id)
 
   #merged out!
   #########################
@@ -462,14 +471,19 @@ utils::globalVariables(c("SPECIATE", "SPECIEUROPE", ".SD", "ans", "control",
   #corrections
   ######################
   #from ..rsp_species_id
+  ########################
+  #now doing this as part of SPECIEUROPE data merge...
+  #########################
   #    need to transpose any changes
-  pc.wts.eu$Specie.Id[pc.wts.eu$Specie.Id>2786] <-
-    pc.wts.eu$Specie.Id[pc.wts.eu$Specie.Id>2786] + 0.5
-  pc.wts.eu$Specie.Id[tolower(pc.wts.eu$Specie)=="aluminum oxide"] <- 2848
+#  pc.wts.eu$Specie.Id[pc.wts.eu$Specie.Id>2786] <-
+#    pc.wts.eu$Specie.Id[pc.wts.eu$Specie.Id>2786] + 0.5
+#  pc.wts.eu$Specie.Id[tolower(pc.wts.eu$Specie)=="aluminum oxide"] <- 2848
+
+#  print(length(pc.wts.eu$Specie.Id))
 
   #other changes
   #######################
-  pc.wts.eu <- pc.wts.eu[c("Id", "Specie.Id", "Relative.Mass")]
+  pc.wts.eu <- pc.wts.eu[c("Id", ".species.id", "Relative.Mass")]
   names(pc.wts.eu) <- c(".profile.id", ".species.id", ".pc.weight")
   pc.wts.eu$.profile.id <- paste("EU:", pc.wts.eu$.profile.id, sep="")
   pc.wts.eu$.pc.weight[tolower(pc.wts.eu$.pc.weight)=="not detected"] <- NA
@@ -507,15 +521,17 @@ utils::globalVariables(c("SPECIATE", "SPECIEUROPE", ".SD", "ans", "control",
 
   #corrections
   ######################
+  #now doing this as part of SPECIEUROPE data merge...
+  #####################
   #from ..rsp_species_id
   #    need to transpose any changes
-  pc.unc.eu$Specie.Id[pc.unc.eu$Specie.Id>2786] <-
-    pc.unc.eu$Specie.Id[pc.unc.eu$Specie.Id>2786] + 0.5
-  pc.unc.eu$Specie.Id[tolower(pc.unc.eu$Specie)=="aluminum oxide"] <- 2848
+#  pc.unc.eu$Specie.Id[pc.unc.eu$Specie.Id>2786] <-
+#    pc.unc.eu$Specie.Id[pc.unc.eu$Specie.Id>2786] + 0.5
+#  pc.unc.eu$Specie.Id[tolower(pc.unc.eu$Specie)=="aluminum oxide"] <- 2848
 
   #other changes
   #######################
-  pc.unc.eu <- pc.unc.eu[c("Id", "Specie.Id", "Uncertainty")]
+  pc.unc.eu <- pc.unc.eu[c("Id", ".species.id", "Uncertainty")]
   names(pc.unc.eu) <- c(".profile.id", ".species.id", ".pc.unc")
   pc.unc.eu$.profile.id <- paste("EU:", pc.unc.eu$.profile.id, sep="")
   pc.unc.eu$.pc.unc[tolower(pc.unc.eu$.pc.unc)=="not detected"] <- NA
