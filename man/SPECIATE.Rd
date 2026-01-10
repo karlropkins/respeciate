@@ -33,6 +33,8 @@ SPECIATE
 the SPECIATE data set is a local version of the EPA's
 SPECIATE repository of organic gas and particulate matter (PM) speciation
 profiles of air pollution sources.
+
+Currently using version 5.4 as of 2025-11-18.
 }
 \references{
 Simon, H., Beck, L., Bhave, P.V., Divita, F., Hsu, Y., Luecken, D.,

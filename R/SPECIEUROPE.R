@@ -8,9 +8,11 @@
 #' Commission (EC) Joint Research Centre JRC's repository of particulate matter
 #' (PM) speciation profiles of European air pollutant sources.
 #'
+#' Currently using version 3.0 as of 2025-11-19.
+#'
 #' @format A ( 3  long) 'list' object
 #' \describe{
-#'   \item{source}{The main SPECIEUROPE data set as of 2024/05/26.}
+#'   \item{source}{The main SPECIEUROPE data set}
 #'   \item{ref}{The source citation, to be used whenever this data is used.}
 #'   \item{website}{The SPECIEUROPE project website link}
 #' }

@@ -236,7 +236,7 @@ rsp_pls_x <- function(x, m, power = 1,
       #could change this with rbindlist version??
       .ref <- intersect(names(.x), names(.tmp))
       .out <- rbind(.x[.ref], .tmp[.ref])
-      .out <- rsp_dcast_profile(.out)
+      .out <- rsp_dcast_profile_id(.out)
 
       #build formula and model args
       .tmp <- names(.out)
@@ -731,17 +731,20 @@ pls_rebuild <- function(pls, species, power=1,
         .mn.df[,ncol(.da)] <- .add[.add$.profile.id==i, ".value"]
         if(!is.na(.mn.df[,ncol(.da)])){
 
-
         ##################################
         #a lot below needs more generalising
         ###################################
         pls[[i]]$args$data <- rbind(.da, .mn.df)
+        ###################################
+        # this bit is particularly messy...
+        names(pls[[i]]$args$data)[names(pls[[i]]$args$data)==.mrk.nm] <- paste(".m_", .mrk.nm, sep="")
+        ###################################
         pls[[i]]$args$weights <- (1/pls[[i]]$args$data$test)^power
         if(any(!grepl(.mrk.nm, pls[[i]]$args$formula))){
           #update formula
           .for <- as.character(pls[[i]]$args$formula)
-          .for[3] <- paste(.for[3], "+ (`.m_", .mrk.nm,
-                           "` * `.n_", .mrk.nm, "`)",
+          .for[3] <- paste(.for[3], "+ (`.n_", .mrk.nm,
+                           "` * `.m_", .mrk.nm, "`)",
                            sep="")
           pls[[i]]$args$formula <- as.formula(paste(.for[2], .for[1],
                                                     .for[3], sep=""))
@@ -750,7 +753,7 @@ pls_rebuild <- function(pls, species, power=1,
           if(!paste(".n_", .mrk.nm, sep="") %in% names(pls[[i]]$args$start)){
             #print("adding .n_ start")
             .arg <- pls[[i]]$args$start
-            .arg[[paste(".m_", .mrk.nm, sep="")]] <-0
+            .arg[[paste(".n_", .mrk.nm, sep="")]] <-0
             pls[[i]]$args$start <- .arg
           }
         }
@@ -778,7 +781,6 @@ pls_rebuild <- function(pls, species, power=1,
         #nls model do.call might need a try wrapper
         ########################
         .cheat2 <- c(.cheat2, i)
-
         pls[[i]]$mod <- do.call(nls, pls[[i]]$args)
       } #stop it trying entry is NA
       } else {
@@ -894,7 +896,7 @@ pls_rebuild <- function(pls, species, power=1,
     .ans <- data.frame(
       .profile.id = .data$.profile.id,
       .species.id = .add$.species.id[1],
-      .species.id = .add$.species[1],
+      .species = .add$.species[1],
       t(coefficients(mod)),
       test = .data$refit,
       check.names=FALSE
@@ -919,6 +921,7 @@ pls_rebuild <- function(pls, species, power=1,
       #print(.ii)
       .ii <- .ii[names(.ii) %in% names(.nn)]
       ########################
+
 
       pls[[i]]$args$data <- rbind(.nn, .ii)
       #rebuild model
@@ -975,6 +978,7 @@ pls_rebuild <- function(pls, species, power=1,
       }
     }
   }
+
 
   ################
   #refit.profiles

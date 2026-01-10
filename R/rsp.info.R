@@ -85,11 +85,11 @@ rsp_info <- function() {
   #         either is probably fine...
   SPECIATE <- respeciate::SPECIATE
   SPECIEUROPE <- respeciate::SPECIEUROPE
-  .epa <- paste("source: SPECIATE 5.2\n\t[in respeciate since 0.2.0]",
+  .epa <- paste("source: SPECIATE 5.4\n\t[in respeciate since 0.4.0]",
                 "\n\tProfiles: ", length(unique(SPECIATE$PROFILES$PROFILE_CODE)),
                 "; species: ", length(unique(SPECIATE$SPECIES_PROPERTIES$SPECIES_ID)),
                 sep="")
-  .eu <- paste("source: SPECIEUROPE 2.0\n\t[in respeciate since 0.3.1]",
+  .eu <- paste("source: SPECIEUROPE 3.0\n\t[in respeciate since 0.4.1]",
                "\n\tProfiles: ", length(unique(SPECIEUROPE$source$Id)),
                "; species: ", length(unique(SPECIEUROPE$source$Specie.Id)),
                sep="")

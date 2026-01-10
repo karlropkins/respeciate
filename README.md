@@ -6,8 +6,8 @@ status](https://github.com/atmoschem/respeciate/workflows/R-CMD-check/badge.svg)
 
 respeciate gives you access to air pollutant emissions profiles in the
 [US/EPA Speciate
-v5.2](https://www.epa.gov/air-emissions-modeling/speciate) and [EU/JRC
-SPECIEUROPE v2.0](https://source-apportionment.jrc.ec.europa.eu/)
+v5.4](https://www.epa.gov/air-emissions-modeling/speciate) and [EU/JRC
+SPECIEUROPE v3.0](https://source-apportionment.jrc.ec.europa.eu/)
 archives via R.
 
 The installation is:
@@ -22,13 +22,13 @@ The currently packaged SPECIATE and SPECIEUROPE archives are:
 library(respeciate)
 # packaged archives
 rsp_info()
-#> respeciate: 0.3.5
-#> source: SPECIATE 5.2
-#>  [in respeciate since 0.2.0]
-#>  Profiles: 6845; species: 3035
-#> source: SPECIEUROPE 2.0
-#>  [in respeciate since 0.3.1]
-#>  Profiles: 285; species: 231
+#> respeciate: 0.4.1
+#> source: SPECIATE 5.4
+#>  [in respeciate since 0.4.0]
+#>  Profiles: 6897; species: 3115
+#> source: SPECIEUROPE 3.0
+#>  [in respeciate since 0.4.1]
+#>  Profiles: 425; species: 232
 ```
 
 ## Example
@@ -57,10 +57,10 @@ rsp_find_profile("cement", source="eu")
 #> [NO SPECIES]
 #>   (CODE EU:1) Cement
 #>   (CODE EU:32) Cement kiln (coal fired)
-#>   (CODE EU:71) Cement production dust
-#>   (CODE EU:72) Cement production dust
-#>   (CODE EU:73) Cement production dust
 #>   (CODE EU:126) Cement kiln
+#>   (CODE EU:127) Cement kiln
+#>   (CODE EU:130) Cement mill
+#>   (CODE EU:131) Cement mill
 #>     > showing 6 of 11
 ```
 
@@ -87,35 +87,35 @@ rsp_match_profile(prf, rsp_us_pm(),
 ![](man/figures/output.options-1.png)<!-- -->
 
     #>    .profile.id                            .profile  n         pd        srd
-    #> 1      US:4377                         Cement Kiln 28 0.29765994 0.05338075
-    #> 2     US:91004 Draft Cement Production - Composite 28 0.17778945 0.06022444
-    #> 3      US:4378                         Cement Kiln 28 0.36391799 0.06283360
-    #> 4      US:4332                         Cement Kiln 28 0.23612659 0.06310738
-    #> 5      US:4365                  Vegetative Burning 25 0.46103010 0.06430434
-    #> 6      US:4325                         Cement Kiln 27 0.31685832 0.08085236
-    #> 7      US:4348                   Unpaved Road Dust 26 0.08515821 0.07900131
-    #> 8      US:4376                         Cement Kiln 28 0.39199238 0.07911302
-    #> 9      US:4205                     Paved Road Dust 24 0.11406813 0.08829917
-    #> 10   US:12707C     Hogged Fuel Boiler / Dutch Oven 26 0.26458592 0.08331874
+    #> 1      US:4323                         Cement Kiln 24 0.17743824 0.04434783
+    #> 2      US:4325                         Cement Kiln 26 0.28711775 0.05282953
+    #> 3     US:91004 Draft Cement Production - Composite 27 0.16877615 0.05754845
+    #> 4      US:4378                         Cement Kiln 27 0.35292141 0.05999083
+    #> 5      US:4377                         Cement Kiln 27 0.30124903 0.05677656
+    #> 6      US:4376                         Cement Kiln 27 0.36702881 0.05738706
+    #> 7      US:4327                         Cement Kiln 24 0.47355560 0.06327460
+    #> 8      US:4332                         Cement Kiln 27 0.18886917 0.07067622
+    #> 9      US:4232                          Local Soil 24 0.42616717 0.06956522
+    #> 10     US:4348                   Unpaved Road Dust 26 0.08510414 0.07863248
     #>          sid   nearness
-    #> 1  0.2657993 0.01418856
-    #> 2  0.2365555 0.01424642
-    #> 3  0.2497328 0.01569161
-    #> 4  0.2654109 0.01674938
-    #> 5  0.3118844 0.02005552
-    #> 6  0.2525269 0.02041740
-    #> 7  0.2694941 0.02129038
-    #> 8  0.2772226 0.02193192
-    #> 9  0.2537020 0.02240167
-    #> 10 0.2925727 0.02437679
+    #> 1  0.2473368 0.01096885
+    #> 2  0.2236303 0.01181428
+    #> 3  0.2201589 0.01266980
+    #> 4  0.2305776 0.01383254
+    #> 5  0.2540946 0.01442662
+    #> 6  0.2523656 0.01448252
+    #> 7  0.2441244 0.01544687
+    #> 8  0.2640956 0.01866528
+    #> 9  0.2980568 0.02073439
+    #> 10 0.2639644 0.02075617
 
 Notes:
 
 - The nearest match to the SPECIEUROPE EU:1 profile Cement from the US
-  EPA SPECIATE PM subset is SPECIATE US:4377 Cement Kiln.
-- In addition, 5/9 of the other nearest matches are cement-related
-  sources.  
-- The nearest metrics, pd (Pearson’s Distance), srd (Spearman Ranked
-  Distance) and sid (Standardized Identity Distance), all tend to zero
+  EPA SPECIATE PM subset is SPECIATE US:4323 Cement Kiln.
+- In addition, 7/9 of the other nearest matches are similar
+  cement-related sources.  
+- The nearness metrics, PD (Pearson’s Distance), SRD (Spearman Ranked
+  Distance) and SID (Standardized Identity Distance), all tend to zero
   for better matches. See ?rsp_match_profile in the packaged respeciate
   documentation for details and references.
