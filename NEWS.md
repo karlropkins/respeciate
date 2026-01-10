@@ -1,7 +1,11 @@
 # Release Notes Version 0.4
 
 * [0.4.1]
-    * release 2025-11-19 
+    * release 2026-01-10  
+    * pushed to ATMOSCHEM
+    
+* [0.4.1]
+    * release 2025-11-20  
     * updated local SPECIEUROPE to versus 3.0 [jrc release] 2025-03-10
     
 * [0.4.0]
